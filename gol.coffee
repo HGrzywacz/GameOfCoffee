@@ -1,3 +1,26 @@
+head = (collection) ->
+  collection[0]
+
+rest = (collection) ->
+  collection.slice(1)
+
+isEmpty = (collection) ->
+  collection.length == 0
+
+cellsEqual = (a, b) ->
+  (a.x == b.x) && (a.y == b.y)
+
+isIn = (element, collection) ->
+
+  if isEmpty(collection)
+    return false
+
+  if cellsEqual(head(collection), element)
+    return true
+  else
+    return isIn(element, rest(collection))
+
+
 advance = (cells) ->
 
   countNeighbours = (cell) ->
@@ -12,7 +35,11 @@ advance = (cells) ->
     else if neighbours > 3 then false
     else true
 
+  console.log(isIn(c(1,0), cells))
+  console.log(isIn(c(1,1), cells))
+
   cells.filter (cell) -> cellFate(cell)
+
 
 c = (x, y) ->
   new ->

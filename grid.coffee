@@ -72,7 +72,7 @@ startLiving = (cells, grid, interval) ->
 
 setupGridAndStart = (cells, width, container) ->
   grid = fitGridToWindow width, container
-  intervalId = startLiving cells, grid, 100
+  intervalId = startLiving cells, grid, 300
 
 #----------------#
 
@@ -80,7 +80,7 @@ width = 28
 
 container = $('#container')
 
-cells = [c(4, 3), c(3, 2), c(2, 4), c(3, 4), c(4, 4)]
+cells = [c(4, 3), c(3, 2), c(2, 4), c(3, 4), c(4, 4), c(14, 14), c(14, 15), c(14, 16)]
 
 setupGridAndStart cells, width, container
 

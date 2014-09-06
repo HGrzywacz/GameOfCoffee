@@ -1,12 +1,8 @@
 ---
 ---
 
-sizeX = 50
-sizeY = 20
 
-width = 28
-
-makeCell = (x, y) ->
+makeCell = (x, y, width) ->
   cell = $(document.createElement('div')).addClass('cell').addClass('dead')
     .css({
       position: 'absolute'
@@ -18,16 +14,16 @@ makeCell = (x, y) ->
   cell.append(inside)
   return cell
 
-addCell = (container, x, y) ->
-  cell = makeCell x, y
+addCell = (container, x, y, width) ->
+  cell = makeCell x, y, width
   container.append cell
   return cell
 
-makeColumn = (container, x) ->
-  (addCell container, x, y for y in [1..sizeY])
+makeColumn = (container, x, width, sizeY) ->
+  (addCell container, x, y, width for y in [1..sizeY])
 
-makeGrid = (container) ->
-  (makeColumn container, x for x in [1..sizeX])
+makeGrid = (container, width, sizeY, sizeX) ->
+  (makeColumn container, x, width, sizeY for x in [1..sizeX])
 
 createCell = (cell) ->
   console.log cell
@@ -46,11 +42,13 @@ killAllCells = (grid) ->
 
 #----------------#
 
+sizeX = 50
+sizeY = 20
+width = 28
+
 container = $('#container')
 
-grid = makeGrid container
-
-console.log(grid)
+grid = makeGrid container, width, sizeY, sizeX
 
 cells = [{x: 2, y: 3}, {x: 3, y: 2}]
 

@@ -1,7 +1,6 @@
 ---
 ---
 
-
 makeCell = (x, y, width) ->
   cell = $(document.createElement('div')).addClass('cell').addClass('dead')
     .css({
@@ -20,13 +19,12 @@ addCell = (container, x, y, width) ->
   return cell
 
 makeColumn = (container, x, width, sizeY) ->
-  (addCell container, x, y, width for y in [1..sizeY])
+  (addCell container, x, y, width for y in [0..sizeY])
 
 makeGrid = (container, width, sizeY, sizeX) ->
-  (makeColumn container, x, width, sizeY for x in [1..sizeX])
+  (makeColumn container, x, width, sizeY for x in [0..sizeX])
 
 createCell = (cell) ->
-  console.log cell
   cell.removeClass 'dead'
   cell.addClass 'alive'
 
@@ -40,11 +38,25 @@ createGeneration = (generation, grid) ->
 killAllCells = (grid) ->
   grid.map (column) -> column.map (cell) -> killCell cell
 
+getViewportDimensions = (viewport) ->
+  [ $(viewport).width(), $(viewport).height()]
+
+getSizes = (width, viewportWidth, viewportHeight) ->
+  sizeX = Math.floor viewportWidth/width - 1
+  sizeY = Math.floor viewportHeight/width - 1
+  [sizeX, sizeY]
+
+
 #----------------#
 
-sizeX = 50
-sizeY = 20
 width = 28
+
+[viewportWidth, viewportHeight] = getViewportDimensions window
+
+console.log viewportWidth
+console.log viewportHeight
+
+[sizeX, sizeY] = getSizes width, viewportWidth, viewportHeight
 
 container = $('#container')
 

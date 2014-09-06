@@ -1,3 +1,6 @@
+---
+---
+
 c = (x, y) ->
   new ->
     this.x = x
@@ -66,13 +69,14 @@ nextGeneration = (cells) ->
 
 glider = [c(0, 1), c(1, 0), c(2, 0), c(2, 1), c(2, 2)]
 beehive = [c(1, 0), c(0, 1), c(2, 1), c(1,2)]
-glider = [c(0, 1), c(1, 0), c(2, 0), c(2, 1), c(2, 2)]
 grid = glider
 
-advance = () ->
-  grid = nextGeneration grid
-  console.log grid
+#advance = () ->
+#  grid = nextGeneration grid
+#  console.log grid
 
-n = 10
+#n = 10
+#advance() for i in [1..n]
 
-advance() for i in [1..n]
+this.nextGeneration = nextGeneration
+this.c = c

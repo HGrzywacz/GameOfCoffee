@@ -1,6 +1,10 @@
 ---
 ---
 
+c = this.c
+
+nextGeneration = this.nextGeneration
+
 makeCell = (x, y, width) ->
   cell = $(document.createElement('div')).addClass('cell').addClass('dead')
     .css({
@@ -41,30 +45,44 @@ killAllCells = (grid) ->
 getViewportDimensions = (viewport) ->
   [ $(viewport).width(), $(viewport).height()]
 
-getSizes = (width, viewportWidth, viewportHeight) ->
+getSizes = (width) ->
+  [viewportWidth, viewportHeight] = getViewportDimensions window
   sizeX = Math.floor viewportWidth/width - 1
   sizeY = Math.floor viewportHeight/width - 1
   [sizeX, sizeY]
 
+fitGridToWindow = (width, container) ->
+  [sizeX, sizeY] = getSizes width
+  makeGrid container, width, sizeY, sizeX
+
+makeFilterCellsOutOfGrid = (grid) ->
+  filterCellsOutOfGrid = (cell) ->
+    return (typeof grid[cell.x][cell.y] != 'undefined')
+
+startLiving = (cells, grid, interval) ->
+  filterCellsOutOfGrid = makeFilterCellsOutOfGrid grid
+
+  advanceGeneration = () ->
+    cells = nextGeneration cells
+    cells = cells.filter filterCellsOutOfGrid
+    killAllCells grid
+    createGeneration cells, grid
+
+  window.setInterval advanceGeneration, interval
+
+setupGridAndStart = (cells, width, container) ->
+  grid = fitGridToWindow width, container
+  intervalId = startLiving cells, grid, 100
 
 #----------------#
 
 width = 28
 
-[viewportWidth, viewportHeight] = getViewportDimensions window
-
-console.log viewportWidth
-console.log viewportHeight
-
-[sizeX, sizeY] = getSizes width, viewportWidth, viewportHeight
-
 container = $('#container')
 
-grid = makeGrid container, width, sizeY, sizeX
+cells = [c(4, 3), c(3, 2), c(2, 4), c(3, 4), c(4, 4)]
 
-cells = [{x: 2, y: 3}, {x: 3, y: 2}]
-
-createGeneration cells, grid
+setupGridAndStart cells, width, container
 
 #----------------#
 
